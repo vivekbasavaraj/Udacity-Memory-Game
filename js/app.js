@@ -53,19 +53,22 @@ $('.card').on('click',function(){
     {
         open_element = open.pop();
         if(child_value(open_element) === value){
-            $(open_element).toggleClass( " match");
-            $(this).toggleClass( " match");
+            $(open_element).effect( "shake" ).delay(60000).toggleClass( " match");
+            $(this).effect( "shake" ).toggleClass( " match");
+
             matched.push(this);
             matched.push(open_element);
         }
         else
         {
-            $(open_element).toggleClass( " wrong").delay(5000).toggleClass( " open show wrong");
-            $(this).toggleClass( " wrong").delay(5000).toggleClass( " open show wrong");
-            //setTimeout($.proxy(function(){
-            //    $(open_element).toggleClass( " open show wrong");
-            //    $(this).toggleClass( " open show wrong");
-            //}), 5000);
+
+            $(open_element).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
+            $(this).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
+            obj = $(this);
+            setTimeout($.proxy(function(){
+                $(open_element).toggleClass( " open show wrong");
+                $(obj).toggleClass( " open show wrong");
+            }), 1000);
 
         }
     }
