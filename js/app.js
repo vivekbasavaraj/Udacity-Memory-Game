@@ -36,13 +36,24 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+var moves = 0;
+var open = [];
+var matched = [];
+
+$('.restart').on('click',function(){
+    moves = 0;
+    open = [];
+    matched = [];
+    $('.moves').text(moves);
+    $('.card').removeClass(" open show match");
+
+});
+
 function child_value(element) {
     return $(element).children().attr('class').split(' ')[1];
 }
 
-var moves = 0;
-var open = [];
-var matched = [];
+
 $('.card').on('click',function(){
     if(!matched.includes(this)){
     $(this).toggleClass( "open show");
