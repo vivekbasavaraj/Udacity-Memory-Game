@@ -1,8 +1,8 @@
 /*
  * Create a list that holds all of your cards
  */
-
-
+//cardList = $('.deck').children();
+//console.log(cardList);
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -40,6 +40,7 @@ function child_value(element) {
     return $(element).children().attr('class').split(' ')[1];
 }
 
+var moves = 0;
 var open = [];
 var matched = [];
 $('.card').on('click',function(){
@@ -55,15 +56,16 @@ $('.card').on('click',function(){
         if(child_value(open_element) === value){
             $(open_element).effect( "shake" ).delay(60000).toggleClass( " match");
             $(this).effect( "shake" ).toggleClass( " match");
-
             matched.push(this);
             matched.push(open_element);
+            moves += 1;
         }
         else
         {
 
             $(open_element).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
             $(this).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
+            moves += 1;
             obj = $(this);
             setTimeout($.proxy(function(){
                 $(open_element).toggleClass( " open show wrong");
@@ -71,6 +73,7 @@ $('.card').on('click',function(){
             }), 1000);
 
         }
+        $('.moves').text(moves);
     }
 }
 });
