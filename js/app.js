@@ -43,6 +43,7 @@ function child_value(element) {
 var open = [];
 var matched = [];
 $('.card').on('click',function(){
+    if(!matched.includes(this)){
     $(this).toggleClass( "open show");
     value = child_value(this);
     if(open.length === 0){
@@ -59,10 +60,14 @@ $('.card').on('click',function(){
         }
         else
         {
-            $(open_element).toggleClass( " wrong").delay(1000).toggleClass( "open show");;
-            $(this).toggleClass( " wrong");
-
+            $(open_element).toggleClass( " wrong").delay(5000).toggleClass( " open show wrong");
+            $(this).toggleClass( " wrong").delay(5000).toggleClass( " open show wrong");
+            //setTimeout($.proxy(function(){
+            //    $(open_element).toggleClass( " open show wrong");
+            //    $(this).toggleClass( " open show wrong");
+            //}), 5000);
 
         }
     }
+}
 });
