@@ -59,8 +59,10 @@ $('.card').on('click',function(){
         }
         else
         {
-            $(open_element).toggleClass( "open show");
-            $(this).toggleClass( "open show");
+            $(open_element).toggleClass( " wrong").delay(1000).toggleClass( "open show");;
+            $(this).toggleClass( " wrong");
+
+
         }
     }
 });
