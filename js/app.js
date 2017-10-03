@@ -35,17 +35,45 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-
+var no_of_stars = 3;
+var wrong_moves = 0;
 var moves = 0;
 var open = [];
 var matched = [];
 
+stars = $('.stars').children();
+
 $('.restart').on('click',function(){
+    no_of_stars = 3;
+    wrong_moves = 0;
     moves = 0;
     open = [];
     matched = [];
     $('.moves').text(moves);
     $('.card').removeClass(" open show match");
+
+
+    reset_star = $( 'ul.stars > li');
+    $(reset_star).each(function(){
+        reset_star_child = $(this).children();
+        if($(reset_star_child).hasClass('fa fa-star-o')){
+            $(reset_star_child).toggleClass('fa-star fa-star-o');
+            //console.log(reset_star_child);
+        }
+    });
+    //for (var i = 0; i < 3; ++i) {
+    //    reset_star = $(stars[i]).children;
+    //    if($(reset_star).hasClass(' fa-star-o')){
+    //        $(reset_star).toggleClass(' fa-star fa-star-o');
+    //    }
+    //}
+    //$(stars).each(function(){
+      //  reset_star = $(this).children;
+       // console.log(reset_star);
+        //if($(reset_star).hasClass(' fa-star-o')){
+        //    $(reset_star).toggleClass(" fa-star fa-star-o");
+        //}
+    //});
 
 });
 
@@ -65,7 +93,7 @@ $('.card').on('click',function(){
     {
         open_element = open.pop();
         if(child_value(open_element) === value){
-            $(open_element).effect( "shake" ).delay(60000).toggleClass( " match");
+            $(open_element).effect( "shake" ).toggleClass( " match");
             $(this).effect( "shake" ).toggleClass( " match");
             matched.push(this);
             matched.push(open_element);
@@ -77,12 +105,21 @@ $('.card').on('click',function(){
             $(open_element).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
             $(this).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
             moves += 1;
+            wrong_moves += 1;
             obj = $(this);
             setTimeout($.proxy(function(){
                 $(open_element).toggleClass( " open show wrong");
                 $(obj).toggleClass( " open show wrong");
             }), 1000);
+            switch(wrong_moves){
+                case 3:
+                case 6:
+                case 10: no_of_stars -= 1;
+                        star_obj = $(stars[no_of_stars]).children();
+                        $(star_obj).toggleClass(" fa-star fa-star-o");
+                        break;
 
+            }
         }
         $('.moves').text(moves);
     }
