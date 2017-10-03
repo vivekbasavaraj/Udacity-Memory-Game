@@ -21,18 +21,35 @@ body {
     font-family: 'Coda', cursive;
 }
 
-.container {
+.container,
+.result{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-h1 {
+h1,h2 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
 
+.result-icon {
+    font-size: 33px;
+    color: #66ff66;
+}
+
+.result {
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+button {
+    margin-top: 2%;
+}
 /*
  * Styles for the deck of cards
  */

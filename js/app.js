@@ -1,8 +1,8 @@
 /*
  * Create a list that holds all of your cards
  */
-//cardList = $('.deck').children();
-//console.log(cardList);
+//var cardList = $('ul.deck > li.card').children();
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -25,6 +25,11 @@ function shuffle(array) {
     return array;
 }
 
+//console.log(cardList);
+//console.log(shuffle(cardList));
+//shuffled_cardList = shuffle(cardList);
+//$(cardList).replaceWith(shuffled_cardList);
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -40,7 +45,7 @@ var wrong_moves = 0;
 var moves = 0;
 var open = [];
 var matched = [];
-
+$('.result').hide();
 stars = $('.stars').children();
 
 $('.restart').on('click',function(){
@@ -51,30 +56,13 @@ $('.restart').on('click',function(){
     matched = [];
     $('.moves').text(moves);
     $('.card').removeClass(" open show match");
-
-
     reset_star = $( 'ul.stars > li');
     $(reset_star).each(function(){
         reset_star_child = $(this).children();
         if($(reset_star_child).hasClass('fa fa-star-o')){
             $(reset_star_child).toggleClass('fa-star fa-star-o');
-            //console.log(reset_star_child);
         }
     });
-    //for (var i = 0; i < 3; ++i) {
-    //    reset_star = $(stars[i]).children;
-    //    if($(reset_star).hasClass(' fa-star-o')){
-    //        $(reset_star).toggleClass(' fa-star fa-star-o');
-    //    }
-    //}
-    //$(stars).each(function(){
-      //  reset_star = $(this).children;
-       // console.log(reset_star);
-        //if($(reset_star).hasClass(' fa-star-o')){
-        //    $(reset_star).toggleClass(" fa-star fa-star-o");
-        //}
-    //});
-
 });
 
 function child_value(element) {
@@ -112,9 +100,9 @@ $('.card').on('click',function(){
                 $(obj).toggleClass( " open show wrong");
             }), 1000);
             switch(wrong_moves){
-                case 3:
-                case 6:
-                case 10: no_of_stars -= 1;
+                case 4:
+                case 8:
+                case 15: no_of_stars -= 1;
                         star_obj = $(stars[no_of_stars]).children();
                         $(star_obj).toggleClass(" fa-star fa-star-o");
                         break;
@@ -122,6 +110,32 @@ $('.card').on('click',function(){
             }
         }
         $('.moves').text(moves);
+        if(matched.length === 16){
+            $('.container').hide();
+            $('.result-icon').children().toggleClass(' fa-check-circle-o');
+            $('.result-header').text('Congratulations..!!');
+            $('.result-message').text('You have won this game succesfully with '+no_of_stars+' stars and '+moves+' moves.');
+            $( "button" ).on('click',function(){
+                no_of_stars = 3;
+                wrong_moves = 0;
+                moves = 0;
+                open = [];
+                matched = [];
+                $('.moves').text(moves);
+                $('.card').removeClass(" open show match");
+                reset_star = $( 'ul.stars > li');
+                $(reset_star).each(function(){
+                     reset_star_child = $(this).children();
+                    if($(reset_star_child).hasClass('fa fa-star-o')){
+                        $(reset_star_child).toggleClass('fa-star fa-star-o');
+                    }
+                });
+                $('.container').show();
+                $('.result').hide();
+            });
+            $('.result').show();
+        }
+
     }
 }
 });
