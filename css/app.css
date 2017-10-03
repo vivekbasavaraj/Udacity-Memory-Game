@@ -34,9 +34,12 @@ h1,h2 {
     font-weight: 300;
 }
 
+/*
+ * Styles for the result of the game
+ */
+
 .result-icon {
     font-size: 33px;
-    color: #66ff66;
 }
 
 .result {
@@ -50,6 +53,7 @@ h1,h2 {
 button {
     margin-top: 2%;
 }
+
 /*
  * Styles for the deck of cards
  */

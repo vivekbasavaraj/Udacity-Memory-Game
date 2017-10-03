@@ -45,10 +45,14 @@ var wrong_moves = 0;
 var moves = 0;
 var open = [];
 var matched = [];
-$('.result').hide();
-stars = $('.stars').children();
 
-$('.restart').on('click',function(){
+/*Function to get the value or the name of the card*/
+function child_value(element) {
+    return $(element).children().attr('class').split(' ')[1];
+}
+
+/*Function to restart the whole game, with moves , cards and stars reset*/
+function restart_game(){
     no_of_stars = 3;
     wrong_moves = 0;
     moves = 0;
@@ -63,79 +67,103 @@ $('.restart').on('click',function(){
             $(reset_star_child).toggleClass('fa-star fa-star-o');
         }
     });
-});
-
-function child_value(element) {
-    return $(element).children().attr('class').split(' ')[1];
+    return;
 }
 
+/*Function to print the end result of the page based on won or lost passed as the parameter*/
+function display_result(result){
+    $('.container').hide();
+    if(result === 'won'){
+        $('.result-icon').children().removeClass(' fa-times-circle-o').toggleClass(' fa-check-circle-o').css('color', '#66ff66');
+        $('.result-header').text('Congratulations..!!');
+        $('.result-message').text('You have won this game succesfully with '+no_of_stars+' stars and '+moves+' moves.');
+    } else if(result === 'lost'){
+        $('.result-icon').children().removeClass(' fa-check-circle-o').toggleClass(' fa-times-circle-o').css('color', '#ff1a1a');
+        $('.result-header').text('You Lost..!!');
+        $('.result-message').text('You lost this game by losing all stars ');
 
+    }
+    $( "button" ).on('click',function(){
+        restart_game();
+        $('.container').show();
+        $('.result').hide();
+    });
+    $('.result').show();
+    return;
+}
+
+/*Function to open the card and display*/
+function open_card(card){
+    $(open_element).effect( "shake" ).toggleClass( " match");
+    $(card).effect( "shake" ).toggleClass( " match");
+    matched.push(card);
+    matched.push(open_element);
+    moves += 1;
+    return;
+}
+
+/*Function to close the card and hide its display*/
+function close_card(card){
+    $(open_element).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
+    $(card).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
+    moves += 1;
+    wrong_moves += 1;
+    obj = $(card);
+    setTimeout($.proxy(function(){
+        $(open_element).toggleClass( " open show wrong");
+        $(obj).toggleClass( " open show wrong");
+    }), 1000);
+    reduce_stars();
+    return;
+}
+
+/*Function to reduce the number of stars based on the number of wrong moves*/
+function reduce_stars(){
+    switch(wrong_moves){
+        case 4:
+        case 12:
+        case 20:no_of_stars -= 1;
+                star_obj = $(stars[no_of_stars]).children();
+                $(star_obj).toggleClass(" fa-star fa-star-o");
+                if(no_of_stars === 0){
+                    display_result('lost');
+                }
+                 break;
+    }
+    return;
+}
+
+stars = $('.stars').children();
+$('.result').hide();
+
+/*Restarts the game if either restart is pressed or if the user wants to play one more game*/
+$('.restart').on('click', function(){
+    restart_game();
+});
+
+/*if a card is pressed, it reacts based on the state of the card*/
 $('.card').on('click',function(){
     if(!matched.includes(this)){
-    $(this).toggleClass( "open show");
-    value = child_value(this);
-    if(open.length === 0){
-        open.push(this);
-    }
-    else
-    {
-        open_element = open.pop();
-        if(child_value(open_element) === value){
-            $(open_element).effect( "shake" ).toggleClass( " match");
-            $(this).effect( "shake" ).toggleClass( " match");
-            matched.push(this);
-            matched.push(open_element);
-            moves += 1;
+        $(this).toggleClass( "open show");
+        value = child_value(this);
+        if(open.length === 0){
+            open.push(this);
         }
         else
         {
-
-            $(open_element).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
-            $(this).effect( "shake" , {direction:'up'}).toggleClass( " wrong");
-            moves += 1;
-            wrong_moves += 1;
-            obj = $(this);
-            setTimeout($.proxy(function(){
-                $(open_element).toggleClass( " open show wrong");
-                $(obj).toggleClass( " open show wrong");
-            }), 1000);
-            switch(wrong_moves){
-                case 4:
-                case 8:
-                case 15: no_of_stars -= 1;
-                        star_obj = $(stars[no_of_stars]).children();
-                        $(star_obj).toggleClass(" fa-star fa-star-o");
-                        break;
-
+            open_element = open.pop();
+            current_card = $(this);
+            if(child_value(open_element) === value){
+                open_card(current_card);
+            }
+            else
+            {
+                close_card(current_card);
+            }
+            $('.moves').text(moves);
+            if(matched.length === 16){
+                display_result('won');
             }
         }
-        $('.moves').text(moves);
-        if(matched.length === 16){
-            $('.container').hide();
-            $('.result-icon').children().toggleClass(' fa-check-circle-o');
-            $('.result-header').text('Congratulations..!!');
-            $('.result-message').text('You have won this game succesfully with '+no_of_stars+' stars and '+moves+' moves.');
-            $( "button" ).on('click',function(){
-                no_of_stars = 3;
-                wrong_moves = 0;
-                moves = 0;
-                open = [];
-                matched = [];
-                $('.moves').text(moves);
-                $('.card').removeClass(" open show match");
-                reset_star = $( 'ul.stars > li');
-                $(reset_star).each(function(){
-                     reset_star_child = $(this).children();
-                    if($(reset_star_child).hasClass('fa fa-star-o')){
-                        $(reset_star_child).toggleClass('fa-star fa-star-o');
-                    }
-                });
-                $('.container').show();
-                $('.result').hide();
-            });
-            $('.result').show();
-        }
-
     }
-}
 });
