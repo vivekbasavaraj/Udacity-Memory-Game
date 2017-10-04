@@ -28,8 +28,8 @@ function shuffle(array) {
 
 /*Functions that shuffles the cards and adds to the HTML back */
 function shuffle_cards(){
-    var i= 0;
-    var j= 0;
+    var i = 0;
+    var j = 0;
     var temporary_cardList = cardList.slice();
     shuffle(temporary_cardList);
     var values = [];
@@ -99,7 +99,8 @@ function display_result(result){
     if(result === 'won'){
         $('.result-icon').children().removeClass(' fa-times-circle-o').toggleClass(' fa-check-circle-o').css('color', '#66ff66');
         $('.result-header').text('Congratulations..!!');
-        $('.result-message').text('You have won this game succesfully with '+no_of_stars+' stars and '+moves+' moves.');
+        $('.result-message').text('You have won this game succesfully with '+no_of_stars+
+            ' stars and '+moves+' moves in '+min+' minutes '+sec+' seconds.');
     } else if(result === 'lost'){
         $('.result-icon').children().removeClass(' fa-check-circle-o').toggleClass(' fa-times-circle-o').css('color', '#ff1a1a');
         $('.result-header').text('You Lost..!!');
@@ -108,6 +109,7 @@ function display_result(result){
     }
     $( "button" ).on('click',function(){
         restart_game();
+        stopclock();
         $('.container').show();
         $('.result').hide();
     });
