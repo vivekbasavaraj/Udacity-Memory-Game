@@ -1,7 +1,8 @@
 /*
  * Create a list that holds all of your cards
  */
-//var cardList = $('ul.deck > li.card').children();
+
+var cardList = $('li.card > i');
 
 /*
  * Display the cards on the page
@@ -25,10 +26,28 @@ function shuffle(array) {
     return array;
 }
 
-//console.log(cardList);
-//console.log(shuffle(cardList));
-//shuffled_cardList = shuffle(cardList);
-//$(cardList).replaceWith(shuffled_cardList);
+/*Functions that shuffles the cards and adds to the HTML back */
+function shuffle_cards(){
+    var i= 0;
+    var j= 0;
+    var temporary_cardList = cardList.slice();
+    shuffle(temporary_cardList);
+    var values = [];
+    while(i<16){
+        values.push($(temporary_cardList[i]).attr('class').split(' ')[1]);
+        ++i;
+    }
+
+    $(cardList).each(function(){
+        oldName = $(this).attr('class').split(' ')[1];
+        var name = oldName+' '+values[j];
+        $(this).toggleClass(name);
+        ++j;
+    });
+    return;
+}
+
+shuffle_cards();
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -67,6 +86,7 @@ function restart_game(){
             $(reset_star_child).toggleClass('fa-star fa-star-o');
         }
     });
+    shuffle_cards();
     return;
 }
 
