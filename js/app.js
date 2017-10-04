@@ -66,6 +66,7 @@ var open = [];
 var matched = [];
 var sec = 0;
 var min = 0;
+var flag = false;
 
 /*Function to get the value or the name of the card*/
 function child_value(element) {
@@ -180,12 +181,15 @@ $('.start').on('click',function(){
     $('.start').hide();
     $('.deck').show();
     stopclock();
+    flag = true;
 });
 
 /*Restarts the game if either restart is pressed or if the user wants to play one more game*/
 $('.restart').on('click', function(){
     restart_game();
-    stopclock();
+    if(flag){
+           stopclock();
+    }
 });
 
 /*if a card is pressed, it reacts based on the state of the card*/
@@ -200,13 +204,7 @@ $('.card').on('click',function(){
         {
             open_element = open.pop();
             current_card = $(this);
-            if(child_value(open_element) === value){
-                open_card(current_card);
-            }
-            else
-            {
-                close_card(current_card);
-            }
+            ((child_value(open_element) === value)?(open_card(current_card)):(close_card(current_card)));
             $('.moves').text(moves);
             if(matched.length === 16){
                 display_result('won');
