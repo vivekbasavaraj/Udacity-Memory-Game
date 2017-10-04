@@ -64,6 +64,8 @@ var wrong_moves = 0;
 var moves = 0;
 var open = [];
 var matched = [];
+var sec = 0;
+var min = 0;
 
 /*Function to get the value or the name of the card*/
 function child_value(element) {
@@ -153,12 +155,37 @@ function reduce_stars(){
     return;
 }
 
+/*Function to run the timer with secs and minutes*/
+function stopclock(){
+    sec = 0;
+    min = 0;
+    setInterval(function(){
+        ++sec;
+        if(sec>60){
+            sec = 0;
+            ++min;
+        }
+        time = min + ':' + sec;
+        $('.time').text(time);
+    },1000);
+    return;
+}
+
 stars = $('.stars').children();
+$('.deck').hide();
 $('.result').hide();
+
+/*Starts the game for the user*/
+$('.start').on('click',function(){
+    $('.start').hide();
+    $('.deck').show();
+    stopclock();
+});
 
 /*Restarts the game if either restart is pressed or if the user wants to play one more game*/
 $('.restart').on('click', function(){
     restart_game();
+    stopclock();
 });
 
 /*if a card is pressed, it reacts based on the state of the card*/
